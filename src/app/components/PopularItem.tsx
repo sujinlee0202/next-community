@@ -1,8 +1,12 @@
 import Image from "next/image";
+import Link from "next/link";
 
 const PopularItem = () => {
   return (
-    <button className="flex w-full gap-3 px-2 py-4 text-sm hover:bg-blue-50">
+    <Link
+      href={"/comment/1"}
+      className="flex w-full gap-3 px-2 py-4 text-sm hover:bg-blue-50"
+    >
       <div>1</div>
       <div className="flex flex-col items-start gap-1">
         <div className="flex items-center gap-2">
@@ -12,7 +16,7 @@ const PopularItem = () => {
         </div>
         <div>글 제목이 들어갈 자리입니다.</div>
       </div>
-    </button>
+    </Link>
   );
 };
 export default PopularItem;
