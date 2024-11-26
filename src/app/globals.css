@@ -6,6 +6,7 @@
   --background: #ffffff;
   --foreground: #171717;
   --border-gray: #d1d5db;
+  --hover-slate: #f1f5f9;
 }
 
 @media (prefers-color-scheme: dark) {
