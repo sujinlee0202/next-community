@@ -5,6 +5,8 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --border-gray: #d1d5db;
+  --hover-slate: #f1f5f9;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -14,7 +16,27 @@
   }
 }
 
+@layer components {
+  .content-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .button-gray {
+    background-color: #64748b;
+    color: white;
+  }
+
+  .button-small {
+    width: 80px;
+    font-size: small;
+  }
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
+  width: 100%;
+  height: 100vh;
 }

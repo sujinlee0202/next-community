@@ -1,4 +1,6 @@
-const HomePage = () => {
-  return <div className="font-pretendard">Hello World!</div>;
+import HomePage from "./HomePage";
+
+const page = () => {
+  return <HomePage />;
 };
-export default HomePage;
+export default page;
