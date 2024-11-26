@@ -17,7 +17,7 @@ const SearchForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="relative">
+      <div className="relative h-full">
         <Input type="text" className="w-60" {...register("search")} />
         <button type="submit">
           <CiSearch className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-xl text-gray-400" />

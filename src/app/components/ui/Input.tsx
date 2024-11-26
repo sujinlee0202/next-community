@@ -9,7 +9,7 @@ const Input = ({ className, ...rest }: InputType) => {
   return (
     <input
       className={twMerge(
-        "border-borderGray rounded-lg border px-2 py-1",
+        "h-full rounded-lg border border-borderGray px-2 py-1",
         className,
       )}
       {...rest}
