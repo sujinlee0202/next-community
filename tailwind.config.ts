@@ -12,6 +12,7 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
         borderGray: "var(--border-gray)",
+        hoverSlate: "var(--hover-slate)",
       },
       fontFamily: {
         pretendard: ["var(--font-pretendard)"],

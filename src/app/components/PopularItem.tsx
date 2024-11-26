@@ -5,7 +5,7 @@ const PopularItem = () => {
   return (
     <Link
       href={"/comment/1"}
-      className="flex w-full gap-3 px-2 py-4 text-sm hover:bg-blue-50"
+      className="hover:bg-hoverSlate flex w-full gap-3 px-2 py-4 text-sm"
     >
       <div>1</div>
       <div className="flex flex-col items-start gap-1">
