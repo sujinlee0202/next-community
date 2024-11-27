@@ -3,13 +3,13 @@ import SearchForm from "./SearchForm";
 
 const Header = () => {
   return (
-    <header className="border-b px-10 py-2">
-      <div className="mx-auto flex max-w-6xl items-center justify-between">
+    <header className="h-[50px] border-b">
+      <div className="mx-auto flex h-full max-w-6xl items-center justify-between px-2">
         {/** Logo */}
         <Link href={"/"} className="flex text-xl font-bold">
           DEV<p className="text-orange-500">＊</p>TOGETHER
         </Link>
-        <div className="flex gap-4">
+        <div className="flex h-8 gap-4">
           {/** Search Form */}
           <SearchForm />
 
