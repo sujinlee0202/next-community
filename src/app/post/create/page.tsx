@@ -3,6 +3,7 @@
 import Button from "@/app/components/ui/Button";
 import Input from "@/app/components/ui/Input";
 import Textarea from "@/app/components/ui/Textarea";
+import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import { twMerge } from "tailwind-merge";
@@ -18,6 +19,11 @@ const page = () => {
     handleSubmit,
     formState: { isValid },
   } = useForm<CreatePostInputsType>();
+  const router = useRouter();
+
+  const handleBack = () => {
+    router.back();
+  };
 
   const onSubmit: SubmitHandler<CreatePostInputsType> = (data) => {
     console.log(data);
@@ -30,7 +36,7 @@ const page = () => {
     >
       <nav className="fixed left-0 top-0 z-10 h-[50px] w-full border-b bg-white">
         <div className="mx-auto flex h-full max-w-6xl items-center justify-between px-2">
-          <FaArrowLeftLong />
+          <FaArrowLeftLong onClick={handleBack} className="cursor-pointer" />
           <div className="flex h-8 items-center gap-2">
             <Button
               className={twMerge(
