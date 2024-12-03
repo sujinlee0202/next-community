@@ -9,7 +9,11 @@ const Checkbox = ({ children, ...rest }: CheckboxType) => {
 
   return (
     <div className="flex items-center gap-2">
-      <input id={uid} {...rest} />
+      <input
+        className="h-5 w-5 shrink-0 appearance-none rounded border border-gray-400 bg-[url('/check.svg')] bg-center bg-no-repeat checked:bg-[url('/check_blue.svg')]"
+        id={uid}
+        {...rest}
+      />
       <label htmlFor={uid}>{children}</label>
     </div>
   );
