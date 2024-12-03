@@ -10,7 +10,7 @@ export default function Layout({ children }: Readonly<Props>) {
     <main className="h-full font-pretendard">
       <Header />
       <div className="mx-auto flex h-full max-w-5xl">
-        <section className="w-full">{children}</section>
+        <section className="w-full px-2">{children}</section>
         <Popular />
       </div>
     </main>
