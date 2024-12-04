@@ -1,17 +1,20 @@
 "use client";
 
+import { fetchSignup } from "@/app/api/auth";
 import InputError from "@/app/components/InputError";
 import Logo from "@/app/components/Logo";
 import Button from "@/app/components/ui/Button";
 import Checkbox from "@/app/components/ui/Checkbox";
 import Input from "@/app/components/ui/Input";
 import {
+  ERROR_MSG_FAILED_SIGNUP,
   ERROR_MSG_INPUT_EMAIL,
   ERROR_MSG_INPUT_ID,
   ERROR_MSG_INPUT_REQUIRED,
   ERROR_MSG_PASSWORD,
   ERROR_MSG_PASSWORD_CONFIRM,
 } from "@/app/data/message";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
@@ -43,6 +46,8 @@ const page = () => {
   const isTermsChecked = watch("terms");
   const isMarketingChecked = watch("marketing");
 
+  const router = useRouter();
+
   useEffect(() => {
     if (isPrivacyChecked && isTermsChecked && isMarketingChecked) {
       setValue("allChecked", true);
@@ -51,6 +56,7 @@ const page = () => {
     }
   }, [isPrivacyChecked, isTermsChecked, isMarketingChecked]);
 
+  // 체크박스 : 모두 동의하기 함수
   const onChangeAllCheckbox = () => {
     const allCheckedValue = watch("allChecked");
 
@@ -66,18 +72,19 @@ const page = () => {
   };
 
   const onSubmit: SubmitHandler<SignupInputsType> = (data) => {
-    const signupData = {
+    const user = {
+      username: data.id,
       email: data.email,
-      id: data.id,
       password: data.password,
-      policy: {
-        privacy: data.privacy,
-        terms: data.terms,
-        marketing: data.marketing,
-      },
     };
 
-    console.log(signupData);
+    // 회원가입하기
+    try {
+      fetchSignup(user);
+      router.push("/");
+    } catch (error) {
+      alert(ERROR_MSG_FAILED_SIGNUP);
+    }
   };
 
   return (
