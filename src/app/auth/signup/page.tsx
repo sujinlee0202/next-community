@@ -1,12 +1,34 @@
 "use client";
 
+import InputError from "@/app/components/InputError";
 import Logo from "@/app/components/Logo";
 import Button from "@/app/components/ui/Button";
 import Checkbox from "@/app/components/ui/Checkbox";
 import Input from "@/app/components/ui/Input";
+import {
+  ERROR_MSG_INPUT_EMAIL,
+  ERROR_MSG_INPUT_ID,
+  ERROR_MSG_INPUT_REQUIRED,
+  ERROR_MSG_PASSWORD,
+  ERROR_MSG_PASSWORD_CONFIRM,
+} from "@/app/data/message";
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
+
+interface SignupCheckboxType {
+  privacy: boolean;
+  terms: boolean;
+  marketing: boolean;
+  allChecked: boolean;
+}
+
+interface SignupInputsType extends SignupCheckboxType {
+  id: string;
+  email: string;
+  password: string;
+  password_confirm: string;
+}
 
 const page = () => {
   const {
@@ -14,10 +36,9 @@ const page = () => {
     handleSubmit,
     watch,
     setValue,
-    formState: { isValid },
-  } = useForm();
+    formState: { isValid, errors },
+  } = useForm<SignupInputsType>({ mode: "onChange" });
   const passwordValue = watch("password");
-
   const isPrivacyChecked = watch("privacy");
   const isTermsChecked = watch("terms");
   const isMarketingChecked = watch("marketing");
@@ -44,7 +65,7 @@ const page = () => {
     }
   };
 
-  const onSubmit = (data: any) => {
+  const onSubmit: SubmitHandler<SignupInputsType> = (data) => {
     const signupData = {
       email: data.email,
       id: data.id,
@@ -81,83 +102,85 @@ const page = () => {
               <label className="text-sm font-bold">이메일</label>
               <Input
                 type="email"
-                className="h-11"
+                className={twMerge("h-11", errors.email && "border-red-500")}
                 placeholder="이메일을 입력해주세요."
                 {...register("email", {
-                  required: {
-                    value: true,
-                    message: "",
-                  },
-                  maxLength: {
-                    value: 30,
-                    message: "",
-                  },
+                  required: ERROR_MSG_INPUT_REQUIRED,
                   pattern: {
                     value: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
-                    message: "",
+                    message: ERROR_MSG_INPUT_EMAIL,
                   },
                 })}
               />
+              {errors.email && <InputError error={errors.email.message} />}
             </div>
 
             <div className="flex flex-col gap-2">
               <label className="text-sm font-bold">아이디</label>
               <Input
                 type="text"
-                className="h-11"
+                className={twMerge("h-11", errors.id && "border-red-500")}
                 placeholder="아이디를 입력해주세요."
                 {...register("id", {
-                  required: {
-                    value: true,
-                    message: "",
-                  },
+                  required: ERROR_MSG_INPUT_REQUIRED,
                   maxLength: {
                     value: 30,
-                    message: "",
+                    message: ERROR_MSG_INPUT_ID,
                   },
                 })}
               />
+              {errors.id && <InputError error={errors.id.message} />}
             </div>
 
             <div className="flex flex-col gap-2">
               <label className="text-sm font-bold">비밀번호</label>
               <Input
                 type="password"
-                className="h-11"
+                className={twMerge("h-11", errors.password && "border-red-500")}
                 placeholder="영문, 숫자 포함 6자 이상"
                 {...register("password", {
-                  required: "",
+                  required: ERROR_MSG_INPUT_REQUIRED,
                   minLength: {
                     value: 6,
-                    message: "",
+                    message: ERROR_MSG_PASSWORD,
                   },
                   pattern: {
                     value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/,
-                    message: "",
+                    message: ERROR_MSG_PASSWORD,
                   },
                 })}
               />
+              {errors.password && (
+                <InputError error={errors.password.message} />
+              )}
             </div>
 
             <div className="flex flex-col gap-2">
               <label className="text-sm font-bold">비밀번호 확인</label>
               <Input
                 type="password"
-                className="h-11"
+                className={twMerge(
+                  "h-11",
+                  errors.password_confirm && "border-red-500",
+                )}
                 placeholder="영문, 숫자 포함 6자 이상"
                 {...register("password_confirm", {
-                  required: "",
+                  required: ERROR_MSG_INPUT_REQUIRED,
                   minLength: {
                     value: 6,
-                    message: "",
+                    message: ERROR_MSG_PASSWORD,
                   },
                   pattern: {
                     value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/,
-                    message: "",
+                    message: ERROR_MSG_PASSWORD,
                   },
-                  validate: (value) => value === passwordValue || "",
+                  validate: (value) =>
+                    value === passwordValue || ERROR_MSG_PASSWORD_CONFIRM,
                 })}
               />
+              {errors.password_confirm && (
+                <InputError error={errors.password_confirm.message} />
+              )}
             </div>
 
             {/** 약관 체크박스 영역 */}
