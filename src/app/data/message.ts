@@ -5,3 +5,4 @@ export const ERROR_MSG_PASSWORD = "영문, 숫자 포함 6자 이상이어야 �
 export const ERROR_MSG_PASSWORD_CONFIRM = "비밀번호가 일치하지 않습니다.";
 
 export const ERROR_MSG_FAILED_SIGNUP = "회원가입이 실패했습니다.";
+export const ERROR_MSG_FAILED_LOGIN = "로그인에 실패했습니다.";
