@@ -1,5 +1,6 @@
 "use client";
 
+import { fetchLogin } from "@/app/api/auth";
 import InputError from "@/app/components/InputError";
 import Logo from "@/app/components/Logo";
 import Button from "@/app/components/ui/Button";
@@ -28,9 +29,8 @@ const page = () => {
   const router = useRouter();
 
   const onSubmit: SubmitHandler<LoginInputsType> = (data) => {
-    console.log(data);
     try {
-      // TODO : Login
+      fetchLogin(data);
       router.push("/");
     } catch (error) {
       alert(MESSAGES.ERROR_MSG_FAILED_LOGIN);

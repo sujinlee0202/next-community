@@ -5,7 +5,11 @@ export const fetchSignup = async (user: {
   email: string;
   password: string;
 }) => {
-  console.log(user);
   const response = await api.post("/api/users", user);
+  return response.data;
+};
+
+export const fetchLogin = async (user: { email: string; password: string }) => {
+  const response = await api.post("/api/auth", user);
   return response.data;
 };
