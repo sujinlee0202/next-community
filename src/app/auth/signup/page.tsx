@@ -6,14 +6,7 @@ import Logo from "@/app/components/Logo";
 import Button from "@/app/components/ui/Button";
 import Checkbox from "@/app/components/ui/Checkbox";
 import Input from "@/app/components/ui/Input";
-import {
-  ERROR_MSG_FAILED_SIGNUP,
-  ERROR_MSG_INPUT_EMAIL,
-  ERROR_MSG_INPUT_ID,
-  ERROR_MSG_INPUT_REQUIRED,
-  ERROR_MSG_PASSWORD,
-  ERROR_MSG_PASSWORD_CONFIRM,
-} from "@/app/data/message";
+import { MESSAGES } from "@/app/data/message";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -83,7 +76,7 @@ const page = () => {
       fetchSignup(user);
       router.push("/");
     } catch (error) {
-      alert(ERROR_MSG_FAILED_SIGNUP);
+      alert(MESSAGES.ERROR_MSG_FAILED_SIGNUP);
     }
   };
 
@@ -112,10 +105,10 @@ const page = () => {
                 className={twMerge("h-11", errors.email && "border-red-500")}
                 placeholder="이메일을 입력해주세요."
                 {...register("email", {
-                  required: ERROR_MSG_INPUT_REQUIRED,
+                  required: MESSAGES.ERROR_MSG_INPUT_REQUIRED,
                   pattern: {
                     value: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
-                    message: ERROR_MSG_INPUT_EMAIL,
+                    message: MESSAGES.ERROR_MSG_INPUT_EMAIL,
                   },
                 })}
               />
@@ -129,10 +122,10 @@ const page = () => {
                 className={twMerge("h-11", errors.id && "border-red-500")}
                 placeholder="아이디를 입력해주세요."
                 {...register("id", {
-                  required: ERROR_MSG_INPUT_REQUIRED,
+                  required: MESSAGES.ERROR_MSG_INPUT_REQUIRED,
                   maxLength: {
                     value: 30,
-                    message: ERROR_MSG_INPUT_ID,
+                    message: MESSAGES.ERROR_MSG_INPUT_ID,
                   },
                 })}
               />
@@ -146,14 +139,14 @@ const page = () => {
                 className={twMerge("h-11", errors.password && "border-red-500")}
                 placeholder="영문, 숫자 포함 6자 이상"
                 {...register("password", {
-                  required: ERROR_MSG_INPUT_REQUIRED,
+                  required: MESSAGES.ERROR_MSG_INPUT_REQUIRED,
                   minLength: {
                     value: 6,
-                    message: ERROR_MSG_PASSWORD,
+                    message: MESSAGES.ERROR_MSG_PASSWORD,
                   },
                   pattern: {
                     value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/,
-                    message: ERROR_MSG_PASSWORD,
+                    message: MESSAGES.ERROR_MSG_PASSWORD,
                   },
                 })}
               />
@@ -172,17 +165,18 @@ const page = () => {
                 )}
                 placeholder="영문, 숫자 포함 6자 이상"
                 {...register("password_confirm", {
-                  required: ERROR_MSG_INPUT_REQUIRED,
+                  required: MESSAGES.ERROR_MSG_INPUT_REQUIRED,
                   minLength: {
                     value: 6,
-                    message: ERROR_MSG_PASSWORD,
+                    message: MESSAGES.ERROR_MSG_PASSWORD,
                   },
                   pattern: {
                     value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/,
-                    message: ERROR_MSG_PASSWORD,
+                    message: MESSAGES.ERROR_MSG_PASSWORD,
                   },
                   validate: (value) =>
-                    value === passwordValue || ERROR_MSG_PASSWORD_CONFIRM,
+                    value === passwordValue ||
+                    MESSAGES.ERROR_MSG_PASSWORD_CONFIRM,
                 })}
               />
               {errors.password_confirm && (

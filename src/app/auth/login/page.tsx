@@ -4,12 +4,7 @@ import InputError from "@/app/components/InputError";
 import Logo from "@/app/components/Logo";
 import Button from "@/app/components/ui/Button";
 import Input from "@/app/components/ui/Input";
-import {
-  ERROR_MSG_FAILED_LOGIN,
-  ERROR_MSG_INPUT_EMAIL,
-  ERROR_MSG_INPUT_REQUIRED,
-  ERROR_MSG_PASSWORD,
-} from "@/app/data/message";
+import { MESSAGES } from "@/app/data/message";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -38,7 +33,7 @@ const page = () => {
       // TODO : Login
       router.push("/");
     } catch (error) {
-      alert(ERROR_MSG_FAILED_LOGIN);
+      alert(MESSAGES.ERROR_MSG_FAILED_LOGIN);
     }
   };
 
@@ -67,10 +62,10 @@ const page = () => {
                 className="h-11"
                 placeholder="이메일을 입력해주세요."
                 {...register("email", {
-                  required: ERROR_MSG_INPUT_REQUIRED,
+                  required: MESSAGES.ERROR_MSG_INPUT_REQUIRED,
                   pattern: {
                     value: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
-                    message: ERROR_MSG_INPUT_EMAIL,
+                    message: MESSAGES.ERROR_MSG_INPUT_EMAIL,
                   },
                 })}
               />
@@ -83,14 +78,14 @@ const page = () => {
                 className="h-11"
                 placeholder="영문, 숫자 포함 6자 이상"
                 {...register("password", {
-                  required: ERROR_MSG_INPUT_REQUIRED,
+                  required: MESSAGES.ERROR_MSG_INPUT_REQUIRED,
                   minLength: {
                     value: 6,
-                    message: ERROR_MSG_PASSWORD,
+                    message: MESSAGES.ERROR_MSG_PASSWORD,
                   },
                   pattern: {
                     value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/,
-                    message: ERROR_MSG_PASSWORD,
+                    message: MESSAGES.ERROR_MSG_PASSWORD,
                   },
                 })}
               />
