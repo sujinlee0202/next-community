@@ -1,7 +1,9 @@
 "use client";
 
+import { fetchCreatePost } from "@/app/api/post";
 import Button from "@/app/components/ui/Button";
 import Input from "@/app/components/ui/Input";
+import useAuth from "@/app/hooks/useAuth";
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -23,6 +25,7 @@ const page = () => {
 
   const router = useRouter();
   const contentRef = useRef<HTMLDivElement>(null);
+  const { user } = useAuth();
 
   const handleBack = () => {
     router.back();
@@ -54,7 +57,12 @@ const page = () => {
   };
 
   const onSubmit: SubmitHandler<CreatePostInputsType> = (data) => {
-    console.log(data);
+    fetchCreatePost({
+      authorId: user.user.id,
+      title: data.title,
+      content: data.content,
+    });
+    router.replace("/");
   };
 
   return (
