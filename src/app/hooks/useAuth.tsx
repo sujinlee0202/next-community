@@ -1,53 +1,58 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchRefreshToken, fetchUserProfile } from "../api/auth";
-import { setupTokenInterceptor } from "../api";
+import { useTokenStore } from "../store/useTokenStore";
+
+const getLocalStorageItem = () => {
+  return localStorage.getItem("isLogin");
+};
 
 const useAuth = () => {
-  const [user, setUser] = useState<any>(null);
-  const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [isInitialized, setIsInitialized] = useState(false); // 초기화 상태 플래그
-
-  const refreshTokenAndGetUser = useCallback(async () => {
-    try {
-      // Refresh Token으로 Access Token 발급
-      const refreshResponse = await fetchRefreshToken();
-      const newAccessToken = refreshResponse.accessToken;
-
-      // Axios 인터셉터에 새 토큰 반영
-      setupTokenInterceptor(newAccessToken);
-      setAccessToken(newAccessToken);
-
-      // 갱신된 Access Token으로 사용자 정보 가져오기
-      const userProfile = await fetchUserProfile();
-      setUser(userProfile);
-    } catch (error) {
-      console.error("토큰 갱신 실패:", error);
-      setUser(null);
-    }
-  }, []);
+  const [user, setUser] = useState<any>({});
+  const [isLogin, setIsLogin] = useState(getLocalStorageItem);
+  const accessToken = useTokenStore((state) => state.accessToken);
+  const setAccessToken = useTokenStore((state) => state.setAccessToken);
 
   useEffect(() => {
-    const initializeUser = async () => {
+    const initializeAuth = async () => {
       try {
-        await refreshTokenAndGetUser();
-      } finally {
-        setIsInitialized(true); // 초기화 완료 플래그 설정
+        // accessToken이 없고 isLogin이 true라면 refreshToken으로 갱신
+        if (!accessToken && isLogin) {
+          await fetchRefreshToken().then((res) => {
+            setAccessToken(res.accessToken);
+            fetchUserProfile().then((res) => setUser(res.user));
+          });
+        } else if (accessToken) {
+          await fetchUserProfile().then((res) => setUser(res.user));
+        }
+      } catch (error) {
+        console.error("초기 인증 실패:", error);
+        setIsLogin("false"); // 로그인 상태 초기화
+        localStorage.removeItem("isLogin"); // 상태 동기화
       }
     };
 
-    if (!isInitialized) {
-      initializeUser();
-    }
+    initializeAuth();
 
-    // 주기적으로 토큰 갱신
-    const refreshInterval = setInterval(refreshTokenAndGetUser, 60 * 1000);
+    const interval = setInterval(
+      () => {
+        if (accessToken) {
+          fetchRefreshToken()
+            .then((res) => setAccessToken(res.accessToken))
+            .catch((error) => {
+              setAccessToken(null); // 초기화
+              setIsLogin("false");
+              localStorage.removeItem("isLogin");
+            });
+        }
+      },
+      5 * 60 * 1000,
+    );
 
-    return () => clearInterval(refreshInterval);
-  }, [isInitialized, refreshTokenAndGetUser]);
+    return () => clearInterval(interval);
+  }, [accessToken, fetchRefreshToken]);
 
-  return { user, accessToken };
+  return { user };
 };
-
 export default useAuth;
