@@ -22,10 +22,9 @@ const page = () => {
     setValue,
     formState: { isValid },
   } = useForm<CreatePostInputsType>();
-
   const router = useRouter();
-  const contentRef = useRef<HTMLDivElement>(null);
   const { user } = useAuth();
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const handleBack = () => {
     router.back();
@@ -58,7 +57,7 @@ const page = () => {
 
   const onSubmit: SubmitHandler<CreatePostInputsType> = (data) => {
     fetchCreatePost({
-      authorId: user.user.id,
+      authorId: user.id,
       title: data.title,
       content: data.content,
     });

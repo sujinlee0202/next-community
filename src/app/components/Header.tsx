@@ -1,8 +1,14 @@
+"use client";
+
 import Link from "next/link";
 import SearchForm from "./SearchForm";
 import Logo from "./Logo";
+import useAuth from "../hooks/useAuth";
+import Button from "./ui/Button";
 
 const Header = () => {
+  const { user } = useAuth();
+
   return (
     <header className="h-[50px] border-b">
       <div className="mx-auto flex h-full max-w-6xl items-center justify-between px-2">
@@ -13,12 +19,18 @@ const Header = () => {
           <SearchForm />
 
           {/** Navigate to Login Page */}
-          <Link
-            href={"/auth/login"}
-            className="button-gray button-small content-center rounded-lg border"
-          >
-            로그인
-          </Link>
+          {user.id ? (
+            <Button className="button-gray button-small content-center rounded-lg border">
+              로그아웃
+            </Button>
+          ) : (
+            <Link
+              href={"/auth/login"}
+              className="button-gray button-small content-center rounded-lg border"
+            >
+              로그인
+            </Link>
+          )}
         </div>
       </div>
     </header>
