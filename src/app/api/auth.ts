@@ -1,3 +1,4 @@
+import axios from "axios";
 import { api } from ".";
 
 export const fetchSignup = async (user: {
@@ -17,11 +18,14 @@ export const fetchLogin = async (user: { email: string; password: string }) => {
 // 사용자 프로필 가져오기
 export const fetchUserProfile = async () => {
   try {
-    const response = await api.get("/api/auth/profile");
-    console.log("profile", response.data);
+    const response = await api.get("/api/auth/profile", {
+      headers: {
+        Authorization: axios.defaults.headers.common.Authorization,
+      },
+    });
+
     return response.data;
   } catch (error) {
-    console.log("fail get profile");
     console.error("프로필 가져오기 실패:", error);
     throw error;
   }
@@ -31,10 +35,10 @@ export const fetchUserProfile = async () => {
 export const fetchRefreshToken = async () => {
   try {
     const response = await api.get("/api/auth/refresh");
-    console.log("fetch refreshtoken", response.data);
+    const { accessToken } = response.data;
+    axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
     return response.data;
   } catch (error) {
-    console.log("error refresh token fail");
     console.error("리프레시 토큰 갱신 실패:", error);
     throw error;
   }

@@ -6,6 +6,8 @@ import Logo from "@/app/components/Logo";
 import Button from "@/app/components/ui/Button";
 import Input from "@/app/components/ui/Input";
 import { MESSAGES } from "@/app/data/message";
+import { useTokenStore } from "@/app/store/useTokenStore";
+import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -27,10 +29,17 @@ const page = () => {
   });
 
   const router = useRouter();
+  const setAccessToken = useTokenStore((state) => state.setAccessToken);
+
+  const onLoginSuccess = (accessToken: string) => {
+    setAccessToken(accessToken);
+    axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+    localStorage.setItem("isLogin", "true"); // localstorage에 login 상태 저장
+  };
 
   const onSubmit: SubmitHandler<LoginInputsType> = (data) => {
     try {
-      fetchLogin(data);
+      fetchLogin(data).then((res) => onLoginSuccess(res.accessToken));
       router.push("/");
     } catch (error) {
       alert(MESSAGES.ERROR_MSG_FAILED_LOGIN);
