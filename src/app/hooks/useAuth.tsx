@@ -4,21 +4,20 @@ import { useEffect, useState } from "react";
 import { fetchRefreshToken, fetchUserProfile } from "../api/auth";
 import { useTokenStore } from "../store/useTokenStore";
 
-const getLocalStorageItem = () => {
-  return localStorage.getItem("isLogin");
-};
-
 const useAuth = () => {
   const [user, setUser] = useState<any>({});
-  const [isLogin, setIsLogin] = useState(getLocalStorageItem);
+  const [isLogin, setIsLogin] = useState<string | null>(null);
   const accessToken = useTokenStore((state) => state.accessToken);
   const setAccessToken = useTokenStore((state) => state.setAccessToken);
 
   useEffect(() => {
+    const storedLoginState = localStorage.getItem("isLogin") || "";
+    setIsLogin(storedLoginState);
+
     const initializeAuth = async () => {
       try {
         // accessToken이 없고 isLogin이 true라면 refreshToken으로 갱신
-        if (!accessToken && isLogin) {
+        if (!accessToken && storedLoginState) {
           await fetchRefreshToken().then((res) => {
             setAccessToken(res.accessToken);
             fetchUserProfile().then((res) => setUser(res.user));
@@ -53,6 +52,6 @@ const useAuth = () => {
     return () => clearInterval(interval);
   }, [accessToken, fetchRefreshToken]);
 
-  return { user };
+  return { user, isLogin };
 };
 export default useAuth;
