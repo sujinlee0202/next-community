@@ -7,7 +7,7 @@ import useAuth from "../hooks/useAuth";
 import Button from "./ui/Button";
 
 const Header = () => {
-  const { user } = useAuth();
+  const { isLogin } = useAuth();
 
   return (
     <header className="h-[50px] border-b">
@@ -19,11 +19,13 @@ const Header = () => {
           <SearchForm />
 
           {/** Navigate to Login Page */}
-          {user.id ? (
+          {isLogin === null && <div></div>}
+          {isLogin === "true" && (
             <Button className="button-gray button-small content-center rounded-lg border">
               로그아웃
             </Button>
-          ) : (
+          )}
+          {isLogin === "" && (
             <Link
               href={"/auth/login"}
               className="button-gray button-small content-center rounded-lg border"
