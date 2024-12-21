@@ -5,8 +5,10 @@ import Link from "next/link";
 import { useState } from "react";
 import { FaHeart, FaRegCommentDots, FaRegHeart } from "react-icons/fa";
 import { twMerge } from "tailwind-merge";
+import { PostType } from "../types/post";
+import dayjs from "dayjs";
 
-const Post = () => {
+const Post = ({ post }: { post: PostType }) => {
   const [isLike, setIsLike] = useState(false);
 
   const handleIsLike = () => {
@@ -18,24 +20,20 @@ const Post = () => {
       <div className="flex items-center gap-3">
         <Image src="/globe.svg" alt="profile image" width={40} height={40} />
         <div className="text-sm">
-          <div className="font-bold">김티치</div>
-          <div className="text-gray-600">프론트엔드 개발자</div>
-          <div className="text-gray-600">2024.11.21</div>
+          <div className="font-bold">{post.author.username}</div>
+          {post.author.job && (
+            <div className="text-gray-600">{post.author.job}</div>
+          )}
+          <div className="text-gray-600">
+            {dayjs(post.createdAt).format("YYYY-MM-DD")}
+          </div>
         </div>
       </div>
 
-      <p className="py-5 font-bold">
-        sunt aut facere repellat provident occaecati excepturi optio
-        reprehenderit
-      </p>
+      <p className="py-5 font-bold">{post.title}</p>
 
       <pre className="relative mb-5 whitespace-pre-wrap font-pretendard">
-        est rerum tempore vitae\nsequi sint nihil reprehenderit dolor beatae ea
-        dolores neque\nfugiat blanditiis voluptate porro vel nihil molestiae ut
-        reiciendis\nqui aperiam non debitis possimus qui neque nisi nulla est
-        rerum tempore vitae\nsequi sint nihil reprehenderit dolor beatae ea
-        dolores neque\nfugiat blanditiis voluptate porro vel nihil molestiae ut
-        reiciendis\nqui aperiam non debitis possimus qui neque nisi nulla
+        {post.content}
         <button className="text-gray-600">...더보기</button>
       </pre>
 
