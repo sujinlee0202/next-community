@@ -20,6 +20,7 @@ const useAuth = () => {
         if (!accessToken && storedLoginState) {
           await fetchRefreshToken().then((res) => {
             setAccessToken(res.accessToken);
+            console.log("error?");
             fetchUserProfile().then((res) => setUser(res.user));
           });
         } else if (accessToken) {
@@ -46,7 +47,7 @@ const useAuth = () => {
             });
         }
       },
-      5 * 60 * 1000,
+      4 * 60 * 1000,
     );
 
     return () => clearInterval(interval);

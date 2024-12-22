@@ -8,4 +8,5 @@ export type PostType = {
     username: string;
     job?: string;
   };
+  likes: any[];
 };

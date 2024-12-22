@@ -1,24 +1,20 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useState } from "react";
-import { FaHeart, FaRegCommentDots, FaRegHeart } from "react-icons/fa";
-import { twMerge } from "tailwind-merge";
+import { FaRegCommentDots } from "react-icons/fa";
 import { PostType } from "../types/post";
 import dayjs from "dayjs";
+import Link from "next/link";
+import LikeButton from "./LikeButton";
 
 const Post = ({ post }: { post: PostType }) => {
-  const [isLike, setIsLike] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+
   const sentences = post.content.split(/\n/);
   const displayedText = isExpanded
     ? post.content
     : sentences.slice(0, 3).join("\n") + (sentences.length > 3 ? "..." : "");
-
-  const handleIsLike = () => {
-    setIsLike((prev) => !prev);
-  };
 
   const handleExpanded = () => {
     setIsExpanded(true);
@@ -51,21 +47,8 @@ const Post = ({ post }: { post: PostType }) => {
       </pre>
 
       <div className="flex gap-3 text-sm font-bold text-slate-600">
-        <button
-          className={twMerge(
-            "flex items-center gap-1",
-            isLike && "text-red-500",
-          )}
-          onClick={handleIsLike}
-        >
-          {isLike ? (
-            <FaHeart className="text-base" />
-          ) : (
-            <FaRegHeart className="text-base" />
-          )}
-          <span>123</span>
-        </button>
-        <Link href={"/comment/1"} className="flex items-center gap-1">
+        <LikeButton postId={post.id} likes={post.likes} />
+        <Link href={`/comment/${post.id}`} className="flex items-center gap-1">
           <FaRegCommentDots className="text-base" />
           <span>5</span>
         </Link>

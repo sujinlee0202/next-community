@@ -1,56 +1,49 @@
 "use client";
 
+import { fetchGetPostById } from "@/app/api/post";
+import { PostType } from "@/app/types/post";
+import dayjs from "dayjs";
 import Image from "next/image";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { twMerge } from "tailwind-merge";
+import "dayjs/locale/ko"; // 한국어 로케일 추가
+import LikeButton from "@/app/components/LikeButton";
 
-const page = () => {
-  const [isLike, setIsLike] = useState(false);
+dayjs.locale("ko"); // 한국어 로케일 설정
+interface CommentPageProps {
+  params: Promise<{ id: number }>;
+}
 
-  const handleIsLike = () => {
-    setIsLike((prev) => !prev);
-  };
+const page = ({ params }: CommentPageProps) => {
+  const [post, setPost] = useState<PostType>();
+  const { id } = use(params);
+
+  useEffect(() => {
+    fetchGetPostById(id).then((res) => setPost(res.post));
+  }, []);
+
+  if (!post) return null;
+
   return (
     <article className="border-b py-10">
       <div className="flex items-center gap-3">
         <Image src="/globe.svg" alt="profile image" width={40} height={40} />
         <div className="text-sm">
-          <div className="font-bold">김티치</div>
-          <div className="text-gray-600">프론트엔드 개발자</div>
+          <div className="font-bold">{post.author.username}</div>
+          <div className="text-gray-600">{post.author.job}</div>
         </div>
       </div>
 
-      <p className="py-5 font-bold">
-        sunt aut facere repellat provident occaecati excepturi optio
-        reprehenderit
-      </p>
+      <p className="py-5 font-bold">{post?.title}</p>
 
       <pre className="relative mb-5 whitespace-pre-wrap font-pretendard">
-        est rerum tempore vitae\nsequi sint nihil reprehenderit dolor beatae ea
-        dolores neque\nfugiat blanditiis voluptate porro vel nihil molestiae ut
-        reiciendis\nqui aperiam non debitis possimus qui neque nisi nulla est
-        rerum tempore vitae\nsequi sint nihil reprehenderit dolor beatae ea
-        dolores neque\nfugiat blanditiis voluptate porro vel nihil molestiae ut
-        reiciendis\nqui aperiam non debitis possimus qui neque nisi nulla
+        {post.content}
       </pre>
 
       <div className="flex flex-col gap-1 text-sm text-slate-600">
-        <div>2024년 11월 28일 오전 5:58</div>
-        <button
-          className={twMerge(
-            "flex items-center gap-1 font-bold",
-            isLike && "text-red-500",
-          )}
-          onClick={handleIsLike}
-        >
-          {isLike ? (
-            <FaHeart className="text-base" />
-          ) : (
-            <FaRegHeart className="text-base" />
-          )}
-          <span>123</span>
-        </button>
+        <div>{dayjs(post.createdAt).format("YYYY년 MM월 DD일 A hh:mm")}</div>
+        <LikeButton postId={post.id} likes={post.likes} />
       </div>
     </article>
   );
