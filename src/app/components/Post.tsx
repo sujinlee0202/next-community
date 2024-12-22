@@ -1,16 +1,17 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useState } from "react";
 import { FaHeart, FaRegCommentDots, FaRegHeart } from "react-icons/fa";
 import { twMerge } from "tailwind-merge";
 import { PostType } from "../types/post";
 import dayjs from "dayjs";
+import Link from "next/link";
 
 const Post = ({ post }: { post: PostType }) => {
   const [isLike, setIsLike] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+
   const sentences = post.content.split(/\n/);
   const displayedText = isExpanded
     ? post.content
@@ -65,7 +66,7 @@ const Post = ({ post }: { post: PostType }) => {
           )}
           <span>123</span>
         </button>
-        <Link href={"/comment/1"} className="flex items-center gap-1">
+        <Link href={`/comment/${post.id}`} className="flex items-center gap-1">
           <FaRegCommentDots className="text-base" />
           <span>5</span>
         </Link>

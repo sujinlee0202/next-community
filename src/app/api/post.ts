@@ -9,3 +9,8 @@ export const fetchGetPost = async () => {
   const response = await api.get("/api/posts");
   return response.data;
 };
+
+export const fetchGetPostById = async (id: number) => {
+  const response = await api.get(`/api/posts/${id}`);
+  return response.data;
+};
