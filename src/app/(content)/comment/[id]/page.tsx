@@ -8,6 +8,7 @@ import { use, useEffect, useState } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { twMerge } from "tailwind-merge";
 import "dayjs/locale/ko"; // 한국어 로케일 추가
+import LikeButton from "@/app/components/LikeButton";
 
 dayjs.locale("ko"); // 한국어 로케일 설정
 interface CommentPageProps {
@@ -15,7 +16,6 @@ interface CommentPageProps {
 }
 
 const page = ({ params }: CommentPageProps) => {
-  const [isLike, setIsLike] = useState(false);
   const [post, setPost] = useState<PostType>();
   const { id } = use(params);
 
@@ -23,42 +23,27 @@ const page = ({ params }: CommentPageProps) => {
     fetchGetPostById(id).then((res) => setPost(res.post));
   }, []);
 
-  const handleIsLike = () => {
-    setIsLike((prev) => !prev);
-  };
+  if (!post) return null;
 
   return (
     <article className="border-b py-10">
       <div className="flex items-center gap-3">
         <Image src="/globe.svg" alt="profile image" width={40} height={40} />
         <div className="text-sm">
-          <div className="font-bold">{post?.author.username}</div>
-          <div className="text-gray-600">{post?.author.job}</div>
+          <div className="font-bold">{post.author.username}</div>
+          <div className="text-gray-600">{post.author.job}</div>
         </div>
       </div>
 
       <p className="py-5 font-bold">{post?.title}</p>
 
       <pre className="relative mb-5 whitespace-pre-wrap font-pretendard">
-        {post?.content}
+        {post.content}
       </pre>
 
       <div className="flex flex-col gap-1 text-sm text-slate-600">
-        <div>{dayjs(post?.createdAt).format("YYYY년 MM월 DD일 A hh:mm")}</div>
-        <button
-          className={twMerge(
-            "flex items-center gap-1 font-bold",
-            isLike && "text-red-500",
-          )}
-          onClick={handleIsLike}
-        >
-          {isLike ? (
-            <FaHeart className="text-base" />
-          ) : (
-            <FaRegHeart className="text-base" />
-          )}
-          <span>123</span>
-        </button>
+        <div>{dayjs(post.createdAt).format("YYYY년 MM월 DD일 A hh:mm")}</div>
+        <LikeButton postId={post.id} likes={post.likes} />
       </div>
     </article>
   );
