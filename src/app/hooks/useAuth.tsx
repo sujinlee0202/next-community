@@ -14,8 +14,6 @@ const useAuth = () => {
     const storedLoginState = localStorage.getItem("isLogin") || "";
     setIsLogin(storedLoginState);
 
-    console.log("accessToken", accessToken);
-
     const initializeAuth = async () => {
       try {
         // accessToken이 없고 isLogin이 true라면 refreshToken으로 갱신
