@@ -27,8 +27,8 @@ const useAuth = () => {
         }
       } catch (error) {
         console.error("초기 인증 실패:", error);
-        setIsLogin("false"); // 로그인 상태 초기화
-        localStorage.removeItem("isLogin"); // 상태 동기화
+        // setIsLogin("false"); // 로그인 상태 초기화
+        // localStorage.removeItem("isLogin"); // 상태 동기화
       }
     };
 

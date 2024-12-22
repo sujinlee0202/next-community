@@ -43,3 +43,16 @@ export const fetchRefreshToken = async () => {
     throw error;
   }
 };
+
+export const fetchLogout = async () => {
+  const response = await api.post(
+    "/api/auth/logout",
+    {},
+    {
+      headers: {
+        Authorization: axios.defaults.headers.common.Authorization,
+      },
+    },
+  );
+  return response.data;
+};
