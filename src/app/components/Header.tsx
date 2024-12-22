@@ -5,9 +5,17 @@ import SearchForm from "./SearchForm";
 import Logo from "./Logo";
 import useAuth from "../hooks/useAuth";
 import Button from "./ui/Button";
+import { fetchLogout } from "../api/auth";
 
 const Header = () => {
   const { isLogin } = useAuth();
+
+  const handleLogout = async () => {
+    await fetchLogout().then(() => {
+      localStorage.removeItem("isLogin");
+      window.location.reload();
+    });
+  };
 
   return (
     <header className="h-[50px] border-b">
@@ -21,7 +29,10 @@ const Header = () => {
           {/** Navigate to Login Page */}
           {isLogin === null && <div></div>}
           {isLogin === "true" && (
-            <Button className="button-gray button-small content-center rounded-lg border">
+            <Button
+              onClick={handleLogout}
+              className="button-gray button-small content-center rounded-lg border"
+            >
               로그아웃
             </Button>
           )}

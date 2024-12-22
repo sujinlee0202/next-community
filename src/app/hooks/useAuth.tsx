@@ -14,6 +14,8 @@ const useAuth = () => {
     const storedLoginState = localStorage.getItem("isLogin") || "";
     setIsLogin(storedLoginState);
 
+    console.log("accessToken", accessToken);
+
     const initializeAuth = async () => {
       try {
         // accessToken이 없고 isLogin이 true라면 refreshToken으로 갱신
@@ -27,8 +29,8 @@ const useAuth = () => {
         }
       } catch (error) {
         console.error("초기 인증 실패:", error);
-        setIsLogin("false"); // 로그인 상태 초기화
-        localStorage.removeItem("isLogin"); // 상태 동기화
+        // setIsLogin("false"); // 로그인 상태 초기화
+        // localStorage.removeItem("isLogin"); // 상태 동기화
       }
     };
 
